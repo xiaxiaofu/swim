@@ -96,7 +96,6 @@ A1 =[0.00272457781241851,-0.00153457263573283,-7.54004141204668e-05
     0,0.00192881941306130,-0.000390509025963946
     0,0,0.00190987873307018];
 b1 = [69.2010347220676,-355.927726253649,-317.252668090672];
-
 A2 = [0.00184660378338664,-0.000160362754257810,-0.000414085924444608
     0,0.00180115668441700,-0.000169701546512634
     0,0,0.00217324287849178];
@@ -110,9 +109,7 @@ fifostd = zeros(2*25,3);
 tempfifostd = zeros(N,4);
 tempm = zeros(N,4);
 for i=1:1:N%1
-
 %     q = [1 0 0 0]';
-    
     gx1 = data(i,5) * (0.5 * (1.0 / Fs));
     gy1 = data(i,6) * (0.5 * (1.0 / Fs));
     gz1 = data(i,7) * (0.5 * (1.0 / Fs));
@@ -122,7 +119,6 @@ for i=1:1:N%1
          gz1  gy1 -gx1  0];
     q = q + A*q;
     q = q / sqrt(q(1)*q(1)+q(2)*q(2)+q(3)*q(3)+q(4)*q(4));
-    
 %     if data(i,1) == 50
 %         q = [0.7071 0.7071 0 0]';
 %     end
@@ -140,21 +136,18 @@ for i=1:1:N%1
     tempfifostd(i,:) = [data(i,1) sum(fifostd-repmat(mean(fifostd),50,1))/50];
 %     acosq = acosq + gz1*180/pi;
     tempacosq(i,:) = acosq;
-    
     fifoacosq1 = [fifoacosq1(2:lg,:);acosq];
     acosq1 = sum(fifoacosq1)/lg;
     tempacosq1(i,:) = acosq1;
     fifoacosq2 = [fifoacosq2(2:lg,:);acosq1];
     acosq2 = sum(fifoacosq2)/lg;
     tempacosq2(i,:) = acosq2;
-    
     fifoacosq1_2 = [fifoacosq1_2(2:lg2,:);acosq];
     acosq1_2 = sum(fifoacosq1_2)/lg2;
     tempacosq1_2(i,:) = acosq1_2;
     fifoacosq2_2 = [fifoacosq2_2(2:lg2,:);acosq1_2];
     acosq2_2 = sum(fifoacosq2_2)/lg2;
     tempacosq2_2(i,:) = acosq2_2;
-    
     fifott = [fifott(2:3,:);data(i,1)];
     fifoit = [fifoit(2:3,:);acosq];
     if((fifoit(3,1) >= fifoit(2,1) && fifoit(1,1) - fifoit(2,1) > 10e-7)||...
@@ -169,7 +162,6 @@ for i=1:1:N%1
         tempacosq2KFt2(i,1) = fifott2(2,1);
         tempacosq2KFt2(i,2) = fifoit2(2,1);
     end
-    
     fifot = [fifot(2:3,:);data(i,1)];
     fifoi = [fifoi(2:3,:);acosq2];%滤波器选择
 %     if fifoi(3,1) <= fifoi(2,1) && fifoi(2,1) - fifoi(1,1) > 10e-7
@@ -225,7 +217,6 @@ for i=1:1:N%1
            end
        end
     end
-    
     if c5 == 5
         c5 = 1;
 %         tdata = AAA1*(data(i,8:10)-bbb1).';%加磁力计校准
@@ -233,7 +224,6 @@ for i=1:1:N%1
         nm = sqrt(tdata(:,1)*tdata(:,1) + tdata(:,2)*tdata(:,2) + tdata(:,3)*tdata(:,3));
         tempnm(i,:) = nm;
         tdata = [tdata(:,1:3) nm];
-        
         fifonm1 = [fifonm1(2:lm,:);tdata];
         fnm1 = sum(fifonm1)/lm;
         fifonm2 = [fifonm2(2:lm,:);fnm1];
@@ -256,7 +246,6 @@ for i=1:1:N%1
                     maxKFmn = diffKFmn;
                 end
                 dd = diffKFmn/maxKFmn;
-
                 if (diffKFmn > 170 && dd > 0.55) || (dd > 0.9 && lapt == 0)||diffKFmn > 200%主要判别依据：磁力计波动大于180uT
                     lapt = lapt + 1;  
 %                     disp(['t1: ',num2str(data(i,1)),' ','strokes: ',num2str(stroke),' ','lapt: ',num2str(lapt)]);
@@ -360,5 +349,3 @@ grid on
 % hold on
 % plot(tempfifostd(:,1),tempfifostd(:,4))
 % legend('m1-0','m2-0','m3-0')
-
-
